@@ -1,0 +1,13 @@
+target/
+dbt_packages/
+.env
+.env.local
+*.pyc
+__pycache__/
+.vscode/
+.idea/
+*.log
+output/
+.DS_Store
+*.xlsx
+!requirements.txt

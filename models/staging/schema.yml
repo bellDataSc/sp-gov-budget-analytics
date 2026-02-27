@@ -1,0 +1,48 @@
+version: 2
+
+sources:
+  - name: sp_gov_raw
+    database: oracle_db
+    schema: raw_budget_data
+    tables:
+      - name: raw_financial_transactions
+        columns:
+          - name: transaction_id
+            data_tests:
+              - unique
+              - not_null
+          - name: entity_id
+            data_tests:
+              - not_null
+          - name: transaction_amount
+            data_tests:
+              - not_null
+          - name: transaction_date
+            data_tests:
+              - not_null
+
+models:
+  - name: stg_budget_transactions
+    description: Staging layer with standardized budget transactions
+    columns:
+      - name: transaction_id
+        description: Unique transaction identifier
+        data_tests:
+          - unique
+          - not_null
+      - name: entity_id
+        description: Government entity identifier
+        data_tests:
+          - not_null
+      - name: execution_date
+        description: Transaction execution date
+      - name: amount
+        description: Transaction amount in numeric format
+        data_tests:
+          - not_null
+      - name: transaction_type
+        description: Type of transaction (revenue, expense)
+      - name: status
+        description: Transaction status
+        data_tests:
+          - not_null
