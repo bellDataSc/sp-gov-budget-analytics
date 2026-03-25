@@ -138,3 +138,65 @@ All metrics are tested for:
 ---
 
 Made with coffee and data by Isabel Cruz
+
+---
+
+## AI Tinkerers SP Demo — March 2026
+
+> **Talk:** *From Oracle to Insight: How I Built an AI-Augmented Budget Intelligence Pipeline for the São Paulo State Government*
+
+This repository includes a fully runnable demo built for [AI Tinkerers SP](https://aitinkerers.org) + Banco BMG (March 26, 2026).
+The demo shows how to layer Gemini LLM on top of a real government data pipeline — no fine-tuning, pure context engineering.
+
+### The 3-Beat Structure
+
+| Beat | What happens |
+|------|--------------|
+| **Beat 1** | Raw Oracle/SIGEO data structure — the original problem |
+| **Beat 2** | dbt transformation output (`fct_budget_execution`) — anomaly flags, moving averages |
+| **Beat 3** | Gemini 1.5 Flash generates economic narratives and anomaly alerts in Portuguese |
+
+### Running the Demo
+
+**Prerequisites:**
+```bash
+pip install -r requirements.txt
+cp .env.example .env
+# Add your GEMINI_API_KEY to .env
+# Get a free key at: https://aistudio.google.com/app/apikey
+```
+
+**Full demo (interactive, 3 beats):**
+```bash
+python demo/run_demo.py
+```
+
+**Single beat:**
+```bash
+python demo/run_demo.py --beat 1   # Raw data structure
+python demo/run_demo.py --beat 2   # dbt output
+python demo/run_demo.py --beat 3   # Gemini analysis
+```
+
+**Anomaly alerts only:**
+```bash
+python demo/run_demo.py --anomaly-only
+```
+
+### Builder Takeaway
+
+The reusable pattern (works with any relational database):
+
+```
+Oracle/SIGEO -> dbt (transform) -> Python dict -> Gemini prompt -> Economic narrative
+```
+
+- `src/llm_narrative.py` — core LLM layer with `generate_narrative()` and `batch_analyze()`
+- `demo/sample_data.py` — anonymized budget records mirroring Oracle schema
+- `demo/run_demo.py` — interactive demo runner
+
+Key insight: **structured context + clear analyst role = domain-specific LLM analysis without fine-tuning.**
+
+---
+
+Made with coffee and data by Isabel Cruz
